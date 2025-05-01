@@ -1,0 +1,34 @@
+
+<div class="d-flex align-items-center vh-100  fs-4  flex-column">
+    <h1 style="font-size: 50px;margin-bottom: 60px;margin-top: 50px;">Sign Up</h1>
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-3 w-bm w-md w-sm h-75 rounded ">
+        <div class="fs-4 " style="color:red;" *ngIf="visible==true" > this user email already exists</div>
+        <form #signup="ngForm" (ngSubmit)="submit(signup)"  class=" d-flex justify-content-center align-items-center flex-column gap-3 h-100 w-100 " action="/verification" style="box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);">
+            <div class="d-flex flex-column w-75 ">
+                <label for="Name">Name</label>
+                <input required ngModel pattern="^[A-Za-z]+$" #name="ngModel" type="Name" name="Name" class="rounded">
+                <div class="fs-6 " style="color:red;" *ngIf="name.touched && name.invalid">please write a valid name without numbers nor special charachters</div>
+            </div>
+            
+            <div class="d-flex flex-column w-75 ">
+                <label for="Email">Email</label>
+                <input required ngModel minlength="5" pattern="^(?!@)(.*@.*)(?<!@)$" type="Email" name="Email" #email="ngModel" class="rounded">
+                <div class="fs-6 " style="color:red;" *ngIf="email.invalid && email.touched ">please write a valid email</div>
+            </div>
+            <div class="d-flex flex-column w-75">
+                <label for="Password">Password</label>
+                <input required ngModel #password="ngModel" type="password" pattern="^(?=.*[A-Za-z])(?=.*\d).+$" name="Password" class="rounded">
+                <div class="fs-6 " style="color:red;" *ngIf="password.invalid && password.touched">please write a valid password 8-16 charachters including numbers and letters</div>
+            </div>
+            <div class="d-flex flex-column w-75">
+                <label for="RPassword">Repeate Password</label>
+                <input required ngModel #repassword="ngModel" type="password" name="RPassword" class="rounded">
+                <div class="fs-6 " style="color:red;" *ngIf="(password.value !== repassword.value) && repassword.touched">this field has to match the password field</div>
+            </div>
+            <input type="submit" class="btn btn-primary" [disabled]="signup.invalid || isdisabled == true">
+            
+        </form>
+        <a href="login" class="fs-6">have a account? login</a>
+    </div>
+</div>
+

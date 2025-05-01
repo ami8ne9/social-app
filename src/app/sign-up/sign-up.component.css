@@ -1,0 +1,16 @@
+@media (min-width: 1000px) {
+    .w-bm {
+      width: 25% !important;
+    }
+}
+@media (min-width: 576px) {
+    .w-sm {
+      width: 75% !important;
+    }
+  }
+  
+@media (min-width: 768px) {
+    .w-md {
+      width: 50% !important;
+    }
+  }

@@ -1,0 +1,17 @@
+
+<div class="d-flex align-items-center vh-100  fs-4  flex-column">
+    <h1 style="font-size: 50px;margin-bottom: 70px;margin-top: 70px;">Verification</h1>
+    <div class="fs-4 " style="color:red;" *ngIf="visible==true" > verification code incorrect</div>
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-3 w-25 h-50 rounded ">
+        <form (ngSubmit)="submit(verif)" #verif="ngForm" class=" d-flex justify-content-center align-items-center flex-column gap-3 h-100 w-100 " action="home" action="/home" style="box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);">
+            <div class="d-flex flex-column w-75 ">
+                <label for="Email">Verification Code</label>
+                <input required ngModel #code="ngModel" required pattern="^.{6}$" type="number" name="code" class="rounded">
+                <div class="fs-6" style="color:red;" *ngIf="code.invalid && code.touched">the code should have 6 digits</div>
+            </div>
+            <input type="submit" class="btn btn-primary" [disabled]="verif.invalid || isdisabled">
+            
+        </form>
+        <a href="#" class="fs-6">didn't get the code?</a>
+    </div>
+</div>

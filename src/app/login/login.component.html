@@ -1,0 +1,23 @@
+
+<div class="d-flex align-items-center vh-100  fs-4  flex-column">
+    <h1 style="font-size: 50px;margin-bottom: 70px;margin-top: 70px;">Login</h1>
+    <div class="fs-4 " style="color:red;" *ngIf="visible" >credentials uncorrect</div>
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-3 w-25 h-50 rounded ">
+        <form #login="ngForm" (ngSubmit)="submit(login)" class=" d-flex justify-content-center align-items-center flex-column gap-3 h-100 w-100 " style="box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);">
+            <div class="d-flex flex-column w-75 ">
+                <label for="Email">Email</label>
+                <input required ngModel minlength="5" pattern="^(?!@)(.*@.*)(?<!@)$" type="Email" name="Email" #email="ngModel" class="rounded">
+                <div class="fs-6 " style="color:red;" *ngIf="(email.invalid && email.touched) ">please write a valid email</div>
+            </div>
+            <div class="d-flex flex-column w-75">
+
+                <label for="Password">Password</label>
+                <input required ngModel minlength="8" type="password" name="password" pattern="^(?=.*[A-Za-z])(?=.*\d).+$" #password="ngModel" class="rounded">
+                <div class="fs-6 " style="color:red;" *ngIf="password.invalid && password.touched">please write a valid password 8-16 charachters including numbers and letters</div>
+            </div>
+            <input [disabled]="login.invalid || disabled" type="submit" class="btn btn-primary" >
+            
+        </form>
+        <a href="sign-up" class="fs-6">don't have a account? create one</a>
+    </div>
+</div>
