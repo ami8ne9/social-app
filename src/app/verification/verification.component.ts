@@ -17,6 +17,7 @@ export class VerificationComponent {
     this.isdisabled=true;
     fetch('http://localhost:5000/verification',{
       method:'PUT',
+      
       headers:{
         'Content-Type':'application/json'
       },
@@ -25,7 +26,7 @@ export class VerificationComponent {
       })
     }).then(async(res)=>{
       const data=await res.json()
-      if (data =='the user is added to db'){
+      if (data =='added to the db'){
         window.location.href='/login';
       }else{
         this.visible=true;
