@@ -16,12 +16,15 @@ const PASS=process.env.G_PASS;
 
 const app = express()
 app.use(express.json())
-app.use(cors())
+app.use(cors({origin: 'http://localhost:4200', 
+    credentials: true}))
 app.use(sessions({
     secret:'secret',
     resave:false,
     saveUninitialized:false,
-    cookie:{secure:false}
+    cookie:{
+        maxAge:50*60,
+        secure:false}
 }))
 
 
@@ -46,17 +49,20 @@ conn.connect((error)=>{
 
 
 app.post('/login',async(req,res)=>{
+
+    
     const responce=req.body;
-    console.log(`${responce.email}`)
     conn.query(`SELECT Email,Password FROM social_users_t where Email='${responce.email}'`,async(err,result)=>{
-        if(result==[]){
-            console.log('no user found',result)
+        if(result.length===0){
+            console.log('no user found')
             res.json(false);
         }
         else{
             const isSame= await bcrypt.compare(responce.password,result[0].Password)
             if(isSame){
-                //start a session 
+                //store the session 
+                // req.session.visited=true;
+                console.log(req.session.id)
                 req.session.userId=123
                 res.json(true);
             }
@@ -77,7 +83,9 @@ app.put('/signup',async(req,res)=>{
     const hpass=await bcrypt.hash(request.Password,3)
     let state;
     conn.query('SELECT Email FROM social_users_t',async(err,result)=>{
-        if(err){console.log('there is a error')}
+        if(err){
+            console.log('there is a error')
+        }
         else{
             for (let i=0;i<result.length;i++){
                 if (request.Email==result[i].Email){
@@ -106,13 +114,20 @@ app.put('/signup',async(req,res)=>{
                         pass:PASS,
                     }
                 })
-                
-                await transporter.sendMail({
+                const mailOptions={
                     from:`${GMAIL}`,
                     to:request.Email,
                     subject:`your verification`,
                     text: `Hello! Your verification code is: ${code}`
-                })
+                }
+                
+                await transporter.sendMail(mailOptions,
+                (err,info)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        console.log('no errr')
+                    }})
 
                 res.json('email sent')
                 
@@ -147,7 +162,6 @@ app.put('/verification',async(req,res)=>{
             }
         })
         console.log('verification valid')
-        res.json('the user is added to db');
     }else{
         res.json("code isn't correct")
     }
